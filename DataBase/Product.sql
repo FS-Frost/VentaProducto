@@ -1,0 +1,6 @@
+﻿CREATE TABLE Product(
+	ID INT NOT NULL IDENTITY(1, 1) PRIMARY KEY,
+	Name VARCHAR(50) NOT NULL,
+	Prize int NOT NULL,
+	Quantity int NOT NULL
+)

@@ -1,0 +1,99 @@
+﻿@model VentaProducto.Models.Product
+
+@{
+    ViewBag.Title = "Ingresar";
+}
+
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
+<style>
+    .field-validation-valid
+    {
+        display: none;
+    }
+    .validation-summary-valid
+    {
+        display: none;
+    }
+    #discount{
+        color: forestgreen
+    }
+</style>
+
+<script>
+    $(document).ready(function(){
+        $("#quantity").on("keyup", function () {
+            checkDiscount();
+        });
+
+        $("#prize").on("keyup", function () {
+            checkDiscount();
+        });
+    });
+
+    function checkDiscount() {
+        let discountSpan = document.getElementById("discount");
+        let quantityInput = document.getElementById("quantity");
+            
+        if (quantity.value > 100) {    
+            let prizeInput = document.getElementById("prize");
+            let newPrize = prizeInput.value * 0.75;
+
+            discountSpan.style.display = "block";
+            discountSpan.textContent = "Se aplicará un descuento del 15%. Nuevo precio: $" + newPrize;
+        } else {
+            discountSpan.style.display = "none";
+        }
+    }
+
+</script>
+
+<h2>Ingresar</h2>
+
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, "Nombre", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Prize, "Precio", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Prize, new { htmlAttributes = new { @class = "form-control", @id = "prize" } })
+                @Html.ValidationMessageFor(model => model.Prize, "Debe ingresar un número.", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Quantity, "Cantidad", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control", @id = "quantity" } })
+                @Html.ValidationMessageFor(model => model.Quantity, "Debe ingresar un número.", new { @class = "text-danger", @id = "validationQuantity" })
+                <span id="discount"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Ingresar" display="none" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Volver al listado", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
